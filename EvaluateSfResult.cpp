@@ -228,7 +228,7 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
 		for (vector<int>::iterator it = correctness1.excess.begin(); it != correctness1.excess.end();) {
 			bool DeletePitch = true;
 			int repeatLoc = count(AllLocation.begin(), AllLocation.end(), location);
-			if (repeatLoc >= 5){
+			if (repeatLoc >= 4){
 				for (map<int, bool>::iterator it = LocationMap.begin(); it != LocationMap.end(); it++){
 					if (location == it->first){
 						if (it->second){
@@ -375,7 +375,7 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 		bool DeletePitch = true;
 		for (vector<int>::iterator it = correctness->excess.begin(); it != correctness->excess.end();) {
 			int repeatLoc = count(AllLocation.begin(), AllLocation.end(), location);
-			if (repeatLoc >= 5){
+			if (repeatLoc >= 4){
 				for (map<int, bool>::iterator it = LocationMap.begin(); it != LocationMap.end(); it++){
 					if (location == it->first){
 						if (it->second){
