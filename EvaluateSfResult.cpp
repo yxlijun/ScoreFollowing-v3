@@ -48,11 +48,17 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
     // 存放演奏正确性评价表，每一行表示当前位置的正确性
     vector<Correctness> totalCorrectness;
 	vector<Correctness> totalCorrectness1;
+	vector<int> AllLocation;
+	map<int, bool> LocationMap;
+	for (int i = 0; i < sfResult[0].size(); i++){
+		AllLocation.push_back(static_cast<int>(sfResultLocate[i]));
+		LocationMap.insert(pair<int, int>(sfResultLocate[i], true));
+	}
     // 遍历sfResult的每一个位置
     for (vector<int>::size_type i = 0; i < sfResult[2].size(); ++i) {
         // 评价乐谱中第iEventScore个位置的演奏正确性
         int location = static_cast<int>(sfResultLocate[i]); // 当前演奏的音符在乐谱中的位置
-
+		
         // 遍历当前位置演奏的音符
         set<int> pitchesPerformance;
         for (vector<int>::size_type j = 1; j < sfResult[0][i].size(); j += 2) {
@@ -137,7 +143,19 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
 			currOctavesInScore.push_back(nowpitch);
 		}
 		Correctness correctness1 = *correctness;
+		bool DeletePitch = true;
 		for (vector<int>::iterator it = correctness->excess.begin(); it != correctness->excess.end();) {
+			int repeatLoc = count(AllLocation.begin(), AllLocation.end(), location);
+			if (repeatLoc >= 5){
+				for (map<int, bool>::iterator it = LocationMap.begin(); it != LocationMap.end(); it++){
+					if (location == it->first){
+						if (it->second){
+							DeletePitch = false;
+							it->second = false;
+						}
+					}
+				}
+			}
 			// 是否是上一个位置的延音
 			bool findInLast = find(lastPitchesInScore.begin(), lastPitchesInScore.end(), *it) != lastPitchesInScore.end();
 			bool findInNext = find(nextPitchesInScore.begin(), nextPitchesInScore.end(), *it) != nextPitchesInScore.end();
@@ -201,13 +219,25 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
 			bool MinusKeepPitch = ((NowHpeakerMax * 2) < PrevHpeakerMax && distance<=7);
 			//cout << *it << "..." << PrevHpeakerMax << "..." << NowHpeakerMax << "...." << MinusKeepPitch << endl;
 			// 是否是上一个位置的倍频错误
-			if (findInLast || findInLastOctave || findInOctave || findInNext || findInNextOctave || isMutifreq || MinusKeepPitch) {
+			if ((findInLast || findInLastOctave || findInOctave || findInNext || findInNextOctave || isMutifreq || MinusKeepPitch) && DeletePitch) {
 				it = correctness->excess.erase(it);
 			}
 			else ++it;
 
 		}
 		for (vector<int>::iterator it = correctness1.excess.begin(); it != correctness1.excess.end();) {
+			bool DeletePitch = true;
+			int repeatLoc = count(AllLocation.begin(), AllLocation.end(), location);
+			if (repeatLoc >= 5){
+				for (map<int, bool>::iterator it = LocationMap.begin(); it != LocationMap.end(); it++){
+					if (location == it->first){
+						if (it->second){
+							DeletePitch = false;
+							it->second = false;
+						}
+					}
+				}
+			}
 			// 是否是上一个位置的延音
 			bool findInLast = find(lastPitchesInScore.begin(), lastPitchesInScore.end(), *it) != lastPitchesInScore.end();
 			bool findInNext = find(nextPitchesInScore.begin(), nextPitchesInScore.end(), *it) != nextPitchesInScore.end();
@@ -232,7 +262,7 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
 				}
 			}
 			// 是否是上一个位置的倍频错误
-			if (findInLast || findInLastOctave || findInOctave || findInNext || findInNextOctave || isMutifreq) {
+			if ((findInLast || findInLastOctave || findInOctave || findInNext || findInNextOctave || isMutifreq) && DeletePitch) {
 				it = correctness1.excess.erase(it);
 			}
 			else ++it;
@@ -247,11 +277,16 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 	// 存放演奏正确性评价表，每一行表示当前位置的正确性
 	vector<Correctness> totalCorrectness;
 	vector<Correctness> totalCorrectness1;
+	vector<int> AllLocation;
+	map<int, bool> LocationMap;
+	for (int i = 0; i < sfResult[0].size(); i++){
+		AllLocation.push_back(static_cast<int>(sfResultLocate[i]));
+		LocationMap.insert(pair<int, int>(sfResultLocate[i], true));
+	}
 	// 遍历sfResult的每一个位置
 	for (vector<int>::size_type i = 0; i < sfResult[2].size(); ++i) {
 		// 评价乐谱中第iEventScore个位置的演奏正确性
 		int location = static_cast<int>(sfResultLocate[i]); // 当前演奏的音符在乐谱中的位置
-
 		// 遍历当前位置演奏的音符
 		set<int> pitchesPerformance;
 		for (vector<int>::size_type j = 1; j < sfResult[0][i].size(); j += 2) {
@@ -337,7 +372,19 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 			currOctavesInScore.push_back(nowpitch);
 		}
 		Correctness correctness1 = *correctness;
+		bool DeletePitch = true;
 		for (vector<int>::iterator it = correctness->excess.begin(); it != correctness->excess.end();) {
+			int repeatLoc = count(AllLocation.begin(), AllLocation.end(), location);
+			if (repeatLoc >= 5){
+				for (map<int, bool>::iterator it = LocationMap.begin(); it != LocationMap.end(); it++){
+					if (location == it->first){
+						if (it->second){
+							DeletePitch = false;
+							it->second = false;
+						}
+					}
+				}
+			}
 			// 是否是上一个位置的延音
 			bool findInLast = find(lastPitchesInScore.begin(), lastPitchesInScore.end(), *it) != lastPitchesInScore.end();
 			bool findInNext = find(nextPitchesInScore.begin(), nextPitchesInScore.end(), *it) != nextPitchesInScore.end();
@@ -402,7 +449,7 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 			bool MinusKeepPitch = ((NowHpeakerMax * 2) < PrevHpeakerMax && distance<=7);
 			//cout << *it << "..." << PrevHpeakerMax << "..." << NowHpeakerMax << "...."<<MinusKeepPitch<<endl;
 			// 是否是上一个位置的倍频错误
-			if (findInLast || findInLastOctave || findInOctave || findInNext || findInNextOctave || isSureFlag || isMutifreq||MinusKeepPitch) {
+			if ((findInLast || findInLastOctave || findInOctave || findInNext || findInNextOctave || isSureFlag || isMutifreq||MinusKeepPitch) && DeletePitch) {
 				it = correctness->excess.erase(it);
 			}
 			else ++it;
@@ -434,7 +481,7 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 				}
 			}
 			// 是否是上一个位置的倍频错误
-			if (findInLast || findInLastOctave || findInOctave || findInNext || findInNextOctave || isSureFlag || isMutifreq) {
+			if ((findInLast || findInLastOctave || findInOctave || findInNext || findInNextOctave || isSureFlag || isMutifreq) && DeletePitch) {
 				it = correctness1.excess.erase(it);
 			}
 			else ++it;
@@ -443,6 +490,8 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 		totalCorrectness1.push_back(correctness1);
 		totalCorrectness.push_back(*correctness);
 	}
+	
+	
 	return totalCorrectness;
 }
 vector<Correctness> EvaluateSfResult::EvaluateCorrectnessOrigin(int maxPitchesInFrame)
@@ -670,6 +719,35 @@ vector<BeatRhythm> EvaluateSfResult::EvaluateBeatRhythm()
 				++beatnum;
 			}
 			WrongBeat.push_back(beatnum);
+		}
+	}
+	map<int,bool> AllLocationMap;     //下面操作是当出现两次相同定位时，且第一个位置的音符是上两次定位音符的倍频，则不考虑这个小节和下一小节的音符评价
+	for (int i = 0; i < sfResult[0].size(); i++){
+		AllLocationMap.insert(pair<int, bool>(sfResultLocate[i], true));
+	}
+	for (vector<int>::size_type i = 0; i <sfResultLocate.size(); i++){
+		int repeatLoc = count(sfResultLocate.begin(), sfResultLocate.end(), sfResultLocate[i]);
+		if (repeatLoc >= 2 && sfResult[0][i].size()==2){
+			for (map<int,bool>::iterator it = AllLocationMap.begin(); it!=AllLocationMap.end(); it++){
+				if (it->first == sfResultLocate[i] && it->second){
+					vector<int> lastOctive;
+					for (vector<int>::size_type j = i - 2; j >= 0 && j <= i - 1; j++){
+						for (vector<int>::size_type k = 1; k < sfResult[0][j].size(); k += 2){
+							lastOctive.push_back(static_cast<int>(sfResult[0][j][k]) % 12);
+						}
+					}
+					int octive = static_cast<int>(sfResult[0][i][1]) % 12;
+					bool findInLast = find(lastOctive.begin(), lastOctive.end(), octive) != lastOctive.end();
+					if (findInLast){
+						it->second = false;
+						int beatnum = 0;
+						while (beatnum< barFirst.size() && !(sfResultLocate[i] >= barFirst[beatnum] && sfResultLocate[i] <= barEnd[beatnum])){
+							++beatnum;
+						}
+						WrongBeat.push_back(beatnum);
+					}
+				}
+			}
 		}
 	}
 	for (vector<int>::size_type i = 0; i < beatRhythm.size(); i++){
