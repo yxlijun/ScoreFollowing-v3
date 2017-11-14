@@ -146,7 +146,7 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
 		bool DeletePitch = true;
 		for (vector<int>::iterator it = correctness->excess.begin(); it != correctness->excess.end();) {
 			int repeatLoc = count(AllLocation.begin(), AllLocation.end(), location);
-			if (repeatLoc >= 5){
+			if (repeatLoc >= 4){
 				for (map<int, bool>::iterator it = LocationMap.begin(); it != LocationMap.end(); it++){
 					if (location == it->first){
 						if (it->second){
@@ -226,18 +226,6 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
 
 		}
 		for (vector<int>::iterator it = correctness1.excess.begin(); it != correctness1.excess.end();) {
-			bool DeletePitch = true;
-			int repeatLoc = count(AllLocation.begin(), AllLocation.end(), location);
-			if (repeatLoc >= 4){
-				for (map<int, bool>::iterator it = LocationMap.begin(); it != LocationMap.end(); it++){
-					if (location == it->first){
-						if (it->second){
-							DeletePitch = false;
-							it->second = false;
-						}
-					}
-				}
-			}
 			// 是否是上一个位置的延音
 			bool findInLast = find(lastPitchesInScore.begin(), lastPitchesInScore.end(), *it) != lastPitchesInScore.end();
 			bool findInNext = find(nextPitchesInScore.begin(), nextPitchesInScore.end(), *it) != nextPitchesInScore.end();
@@ -490,8 +478,6 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 		totalCorrectness1.push_back(correctness1);
 		totalCorrectness.push_back(*correctness);
 	}
-	
-	
 	return totalCorrectness;
 }
 vector<Correctness> EvaluateSfResult::EvaluateCorrectnessOrigin(int maxPitchesInFrame)
@@ -755,7 +741,7 @@ vector<BeatRhythm> EvaluateSfResult::EvaluateBeatRhythm()
 		if (it != WrongBeat.end()){
 			beatRhythm[i].progress = 0;
 			if (i + 1 < beatRhythm.size())
-				beatRhythm[i + 1].progress = 0;    // 将节奏评价快慢置为零
+				beatRhythm[i + 1].progress = 0;	// 将节奏评价快慢置为零
 		}
 	}
     return beatRhythm;

@@ -247,7 +247,7 @@ void ProcessNMF::GenerateNewPitches(const vector<double> &xH, int iFrame)
             double preHPre7Peak = timeHPeakPair[index][timeHPeakPair[index].size()-2][1]; // 上次出现的H前7帧峰值
             double timeInterval = currOnset - preOffset; // 上次offset和这次onset的时间间隔
             // 如果间隔时间很短，并且前7帧峰值差距比较大，说明这次的音是上一次的延续，而不是新音符，要删除这个音符
-            if (timeInterval < minInterval && preHPre7Peak * xHPeakCoeff > currHPre7Peak) {
+            if (timeInterval < minInterval && preHPre7Peak * xHPeakCoeff > currHPre7Peak && currHPre7Peak<=1000) {
                 it = newPitches.erase(it); // 删除当前音符，不能把他当作新音符
                 // 在timeHPeakPair中删除当前值，也就是timeHPeakPair[index]的最后一个元素timeHPeakPair[index].end()-1
                 timeHPeakPair[index].erase(timeHPeakPair[index].end()-1);
