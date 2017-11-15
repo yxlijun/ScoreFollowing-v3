@@ -1003,7 +1003,7 @@ double EvaluateSfResult::CountScore(vector<Correctness> correctness, vector<Beat
 			correctnessScore -= scorePerEvent;
 			++jumpbackCount;
 		}
-		else if (!correctness[i].excess.empty() || correctness[i].intersection.empty()) { // 多弹了音符或者没有弹
+		else if (!correctness[i].excess.empty() /*|| correctness[i].intersection.empty()*/) { // 多弹了音符或者没有弹
 			int beatnum = 0;
 			while (beatnum< barFirst.size() && !(sfResultLocate[i] >= barFirst[beatnum] && sfResultLocate[i] <= barEnd[beatnum])){
 				++beatnum;
