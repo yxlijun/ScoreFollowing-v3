@@ -62,6 +62,7 @@ void ScoreFollowing::Clear(){
 	vector<int>().swap(sfResultOriginLocate);
 	vector<double>().swap(TotalmaxH);
 	map<int, vector<int>>().swap(MulitiFrq);
+	vector<double>().swap(RhyTime);
 	Reset();
 }
 
@@ -163,6 +164,33 @@ void ScoreFollowing::Reset()
 			}
 		}
 		MulitiFrq.insert(pair<int, vector<int>>(i + 1, pitch));
+	}
+	int firstbar = scoreEvent[0][g_BarFirst][0];
+	int firstindex = 0;
+	for (vector<int>::size_type i = 0; i < scoreEvent.size(); i++){
+		if (firstbar != scoreEvent[i][g_BarFirst][0]){
+			RhyTime.push_back(scoreEvent[i][0][0] - scoreEvent[firstindex][0][0]);
+			firstbar = scoreEvent[i][g_BarFirst][0];
+			firstindex = i;
+		}
+	}
+	RhyTime.push_back(0.0);
+	map<double, int> dataMap;
+	for (int i = 0; i < RhyTime.size(); i++){
+		dataMap[RhyTime[i]]++;
+	}
+	int counts = 0;
+	double MaxTime;
+	for (map<double,int>::iterator it = dataMap.begin(); it!=dataMap.end(); it++){
+		if (it->second > counts){
+			counts = it->second;
+			MaxTime = it->first;
+		}
+	}
+	for (vector<int>::size_type i = 0; i < RhyTime.size(); i++){
+		if (abs(RhyTime[i] - MaxTime) < 1e-2){
+			RhyTime[i] = MaxTime;
+		}
 	}
 }
 
@@ -849,4 +877,8 @@ vector<vector<vector<double>>> ScoreFollowing::GettimePitchesPair(){
 		}
 	}
 	return timeHPeakPair;
+}
+
+vector<double> ScoreFollowing::GetRhyTime(){
+	return RhyTime;
 }

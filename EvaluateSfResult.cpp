@@ -17,6 +17,8 @@ void EvaluateSfResult::Init()
 	sfResultLocate = scoreFollowing.GetSfResultLocate();
 	MulitiFrq = scoreFollowing.GetMultiFreq();
 
+	RhyTime = scoreFollowing.GetRhyTime();
+
 	timePitchesPair = scoreFollowing.GettimePitchesPair();
 	barPair = scoreFollowing.GetBarNum();
     beatToleranceRate = 0.25;
@@ -734,6 +736,23 @@ vector<BeatRhythm> EvaluateSfResult::EvaluateBeatRhythm()
 					}
 				}
 			}
+		}
+	}
+	map<double, int> dataMap;
+	for (vector<int>::size_type i = 0; i < RhyTime.size(); i++){
+		dataMap[RhyTime[i]]++;
+	}
+	int counts = 0;
+	double MaxTime;
+	for (map<double,int>::iterator it = dataMap.begin(); it !=dataMap.end(); it++){
+		if (it->second > counts){
+			counts = it->second;
+			MaxTime = it->first;
+		}
+	}
+	for (int i = 0; i <RhyTime.size() ; i++){
+		if (RhyTime[i] < MaxTime){
+			WrongBeat.push_back(i);
 		}
 	}
 	for (vector<int>::size_type i = 0; i < beatRhythm.size(); i++){

@@ -153,6 +153,8 @@ private:
 	map<int, vector<int>> MulitiFrq;
 
 	vector<vector<vector<double>>> timePitchesPair;
+
+	vector<double> RhyTime;         //小节节拍时长
 };
 
 #endif //EVALUATERESULT_H
