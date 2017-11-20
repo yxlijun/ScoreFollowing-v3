@@ -156,7 +156,7 @@ int main()
  //   
 
 
-	const string scoreEventPath = "../Data/Pad/11.1/HuaShengDun/HuaShengDun.dat";
+	const string scoreEventPath = "../Data/Pad/11.20/MengLongShangDing1/MengLongShangDing1.dat";
 	ScoreFollowing scoreFollowing;
 	if (scoreFollowing.Init(scoreEventPath) == -1) {
 		cout << "Read scoreEvent error!" << endl;
@@ -170,15 +170,15 @@ int main()
 	vector<int> notesInScore = scoreFollowing.GetNoteInScore();
 	int maxPitchesInEvent = scoreFollowing.GetMaxPitchesInFrame();
 	vector<vector<double> > H;
-	if (ReadH("../Data/Pad/11.1/HuaShengDun/xH88.txt", H) == -1) {
+	if (ReadH("../Data/Pad/11.20/MengLongShangDing1/xH88.txt", H) == -1) {
 		cout << "Read H error!" << endl;
 		exit(-1);
 	}
 	vector<double> error;
 	scoreFollowing.ScoreFollowingOffline(H,error, timeResolution, maxPitchesInEvent);
 
-	SaveSfResult("../Data/Pad/11.1/HuaShengDun/sfResult.txt", scoreFollowing.GetSfResult());
-	SaveSfResult("../Data/Pad/11.1/HuaShengDun/sfResultOrigin.txt", scoreFollowing.GetSfResultOrigin());
+	SaveSfResult("../Data/Pad/11.20/MengLongShangDing1/sfResult.txt", scoreFollowing.GetSfResult());
+	SaveSfResult("../Data/Pad/11.20/MengLongShangDing1/sfResultOrigin.txt", scoreFollowing.GetSfResultOrigin());
 
 
 
@@ -207,10 +207,10 @@ int main()
 	double score = evaluateResult.CountScore(correctness1, beatRhythm);
 	int starsNum = evaluateResult.GiveStars(score);
 	cout << "score = " << score << " stars = " << starsNum << endl;
-	evaluateResult.SaveEvaluateResult("../Data/Pad/11.1/HuaShengDun/evaluateResult.txt", correctness1, beatRhythm);
+	evaluateResult.SaveEvaluateResult("../Data/Pad/11.20/MengLongShangDing1/evaluateResult.txt", correctness1, beatRhythm);
 
 	vector<Correctness> correctnessOrigin = evaluateResult.EvaluateCorrectnessOrigin(maxPitchesInEvent);
-	evaluateResult.SaveEvaluateResult("../Data/Pad/11.1/HuaShengDun/evaluateResultOrigin.txt", correctnessOrigin, beatRhythm);
+	evaluateResult.SaveEvaluateResult("../Data/Pad/11.20/MengLongShangDing1/evaluateResultOrigin.txt", correctnessOrigin, beatRhythm);
     cout << "test" << endl;
     return 0;
 }

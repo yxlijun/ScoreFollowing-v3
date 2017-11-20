@@ -397,8 +397,8 @@ void ScoreFollowing::MinusDoubleFreq(vector<int> &pitches, int location){
 			newpitches.erase(pos, newpitches.end());
 		}
 	}
-	int begin = location - 3 >= 0 ? location - 3 : 0;
-	int end = location + 3 < scoreEvent.size() ? location + 3 : scoreEvent.size() - 1;
+	int begin = location - 2 >= 0 ? location - 2 : 0;
+	int end = location + 2 < scoreEvent.size() ? location + 2 : scoreEvent.size() - 1;
 	bool lineOctive = true;
 
 	if (location < scoreEvent.size() - 1){
@@ -424,8 +424,8 @@ void ScoreFollowing::MinusDoubleFreq(vector<int> &pitches, int location){
 				for (int j = 0; j < it.size(); j++){
 					if (octive == it[j]){
 						once = false;
-						int tmpbegin = location - 3 >= 0 ? location - 3 : 0;
-						int tmpend = location + 3 < scoreEvent.size() ? location + 3 : scoreEvent.size() - 1;
+						int tmpbegin = location - 2 >= 0 ? location - 2 : 0;
+						int tmpend = location + 2 < scoreEvent.size() ? location + 2 : scoreEvent.size() - 1;
 						for (int n = tmpbegin; n <= tmpend; n++){
 							vector<double>::iterator it1 = find(scoreEvent[n][g_Pitches].begin(), scoreEvent[n][g_Pitches].end(), newpitches[i]);
 							if (it1 != scoreEvent[n][g_Pitches].end()){

@@ -65,6 +65,40 @@ int isIEventTotal(vector<int> pitch, const vector<vector<vector<double>>>& score
 			if (pitchoctive == scorePitchOctive)
 				iEvent = iEventPre;
 		}
+		// 11/20改进，若下一个位置的音符数多于乐谱音符，且多于的音符是某个乐谱音符的倍频，则还是判断为确定定位
+		if (iEvent == -1 && pitch.size()>scoreEventPitches.size()){
+			vector<int> omssionOctive;
+			int difference1[10];
+			int *end = set_difference(pitch.begin(), pitch.end(), scoreEventPitches.begin(), scoreEventPitches.end(), difference1);
+			for (int *p = difference1; p != end; ++p) {
+				omssionOctive.push_back(*p % 12);
+			}
+			vector<int> scoreOctive;
+			for (int i = 0; i < scoreEventPitches.size(); i++){
+				scoreOctive.push_back(static_cast<int>(scoreEventPitches[i]) % 12);
+			}
+			vector<int> allfind(omssionOctive.size(), 0);
+			for (int i = 0; i < omssionOctive.size(); i++){
+				vector<int>::iterator it = find(scoreOctive.begin(), scoreOctive.end(), omssionOctive[i]);
+				if (it != scoreOctive.end())
+					allfind[i] = 1;
+			}
+			bool allZeroAllfind = all_of(allfind.begin(), allfind.end(), [](int i) {return i != 0; });
+			if (allZeroAllfind)
+				iEvent = iEventPre;
+		}
+		if (iEvent == -1){
+			vector<int> allFind(pitch.size(), 0);
+			for (int i = 0; i < pitch.size(); i++){
+				vector<double>::iterator it = find(scoreEventPitches.begin(), scoreEventPitches.end(), pitch[i]);
+				if (it != scoreEventPitches.end()){
+					allFind[i] = 1;
+				}
+			}
+			bool allZeroAllFind = all_of(allFind.begin(), allFind.end(), [](int i) {return i != 0; });
+			if (allZeroAllFind)
+				iEvent = iEventPre;
+		}
 	}
 	return iEvent;
 }

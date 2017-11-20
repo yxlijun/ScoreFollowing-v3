@@ -90,10 +90,22 @@ vector<vector<int> > scoreFollowingEvent(vector<int>& pitch, vector<vector<vecto
 			vector<int> locb2(pitch.size());
 			int isNext = isIEvent(pitch, scoreEvent, iEventPre + 1, lia2, locb2);
 			int isNext1 = isIEventTotal(pitch, scoreEvent, iEventPre + 1, lia2, locb2);
-
+			// 11/20修改 若当前位置和下一个位置都不匹配，则增加再看下一个是否匹配
+			int isNext2 = -1;
+			if (iEventPre + 2 < scoreEvent.size()){
+				isNext2 = isIEventTotal(pitch, scoreEvent, iEventPre + 2, lia2, locb2);
+			}
 			// 分别和iEventPre、iEventPre+1是否完全匹配
 			if (isNext != -1 || (isNext==-1 && isNext1!=-1)) { // 和当前位置匹配 &  被演奏过 & 和下一位置匹配      确定为下一位置
 				isCurr = iEventPre + 1;
+				vector<vector<int> >().swap(iEvent);
+				iEvent.push_back(vector<int>{isCurr}); // 将iEvent换成下一个位置
+				lia = lia2;
+				locb = locb2;
+				break;
+			}
+			else if (isNext == -1 && isNext1 == -1 && isNext2 != -1){
+				isCurr = iEventPre + 2;
 				vector<vector<int> >().swap(iEvent);
 				iEvent.push_back(vector<int>{isCurr}); // 将iEvent换成下一个位置
 				lia = lia2;
