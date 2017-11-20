@@ -90,7 +90,7 @@ vector<vector<int> > scoreFollowingEvent(vector<int>& pitch, vector<vector<vecto
 			vector<int> locb2(pitch.size());
 			int isNext = isIEvent(pitch, scoreEvent, iEventPre + 1, lia2, locb2);
 			int isNext1 = isIEventTotal(pitch, scoreEvent, iEventPre + 1, lia2, locb2);
-			// 11/20修改 若当前位置和下一个位置都不匹配，则增加再看下一个是否匹配
+// 11/20修改 若当前位置和下一个位置都不匹配，则增加再看下一个是否匹配
 			int isNext2 = -1;
 			if (iEventPre + 2 < scoreEvent.size()){
 				isNext2 = isIEventTotal(pitch, scoreEvent, iEventPre + 2, lia2, locb2);
