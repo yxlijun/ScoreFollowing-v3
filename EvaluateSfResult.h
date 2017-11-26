@@ -82,6 +82,15 @@ public:
      */
 	vector<BeatRhythm> EvaluateBeatRhythmRealtime(int newLocation, double onset, int& newBeatIndex, vector<vector<int>> &PitchesPair);
 
+
+	/**
+	* @author lijun
+	* @date  2017/11/26
+	* @return 返回数组记录之前弹奏过小节内的正确性评价
+	* @brief 实时小节内正确性评价
+	*/
+	vector<Correctness> EvaluateCorrectnessRealtime(int newLocation, double onset, int& newBeatIndex, vector<vector<int>> &PitchesPair);
+
     /**
      * @author zhangqianyi
      * @date  2017/6/6
@@ -147,6 +156,10 @@ private:
     vector<BeatRhythm> realtimeBeatRhythm;          // 实时的小节节奏评价
 	vector<Correctness> RealtotalCorrectness;           //实时的小节正确性评价
 
+	vector<Correctness> totalRealCorrectness;    //实时小节评价过程中的正确性中间值
+
+	vector<Correctness> RhyCorrectness;        //实时正确性评价
+
 	vector<int> sfResultLocate;
 
 	map<int, int> barPair;
@@ -155,6 +168,9 @@ private:
 	vector<vector<vector<double>>> timePitchesPair;
 
 	vector<double> RhyTime;         //小节节拍时长
+
+	vector<Correctness> totalRealCorrectnessModify;    //实时正确性评价过程中的中间值
+
 };
 
 #endif //EVALUATERESULT_H

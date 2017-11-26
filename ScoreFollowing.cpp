@@ -356,7 +356,9 @@ void ScoreFollowing::ScoreFollowingOffline(const vector<vector<double> > &H, vec
                 }
             }
             int newBeatIndex = -1;
+			int newBeatIndex1 = -1;
 			vector<BeatRhythm> realtimeBeatRhythm = evaluateSfResult.EvaluateBeatRhythmRealtime(newLocation, onset, newBeatIndex, PitchesPair);
+			vector<Correctness> correctness = evaluateSfResult.EvaluateCorrectnessRealtime(newLocation, onset, newBeatIndex1, PitchesPair);
 			if (newBeatIndex >= 0){
 				IEventTime.push_back(realtimeBeatRhythm[newBeatIndex].during);
 			}
