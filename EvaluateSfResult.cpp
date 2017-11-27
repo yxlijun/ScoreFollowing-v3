@@ -130,7 +130,12 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
 				lastOctavesInScore.push_back(lastpitch);
 			}
 		}
-		
+		for (vector<int>::size_type j = 1; i>=1 && j < sfResult[0][i-1].size(); j+=2){
+			int lastpitch = static_cast<int>(sfResult[0][i - 1][j]);
+			lastPitchesInScore.push_back(lastpitch);
+			while (lastpitch >= 12) lastpitch -= 12;
+			lastOctavesInScore.push_back(lastpitch);
+		}
 		for (vector<int>::size_type z = 0; z <2; z++){
 			for (vector<int>::size_type j = 0; location<scoreEvent.size()-2 && j < scoreEvent[location+z][g_Pitches].size(); j++) {
 				int nextpitch = static_cast<int>(scoreEvent[location+z][g_Pitches][j]);
@@ -139,11 +144,18 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectness()
 				nextOctavesInScore.push_back(nextpitch);
 			}
 		}
+		for (vector<int>::size_type j = 1; i+1<sfResult[0].size() && j< sfResult[0][i+1].size(); j+=2){
+			int nextpitch = static_cast<int>(sfResult[0][i + 1][j]);
+			nextPitchesInScore.push_back(nextpitch);
+			while (nextpitch >= 12) nextpitch -= 12;
+			nextOctavesInScore.push_back(nextpitch);
+		}
 		for (set<int>::iterator it = pitchesInScore.begin(); it != pitchesInScore.end(); it++){
 			int nowpitch = *it;
 			while (nowpitch >= 12) nowpitch -= 12;
 			currOctavesInScore.push_back(nowpitch);
 		}
+
 		Correctness correctness1 = *correctness;
 		bool DeletePitch = true;
 		for (vector<int>::iterator it = correctness->excess.begin(); it != correctness->excess.end();) {
@@ -346,7 +358,12 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 				lastOctavesInScore.push_back(lastpitch);
 			}
 		}
-
+		for (vector<int>::size_type j = 1; i >= 1 && j < sfResult[0][i - 1].size(); j += 2){
+			int lastpitch = static_cast<int>(sfResult[0][i - 1][j]);
+			lastPitchesInScore.push_back(lastpitch);
+			while (lastpitch >= 12) lastpitch -= 12;
+			lastOctavesInScore.push_back(lastpitch);
+		}
 		for (vector<int>::size_type z = 0; z <2; z++){
 			for (vector<int>::size_type j = 0; location<scoreEvent.size() - 2 && j < scoreEvent[location + z][g_Pitches].size(); j++) {
 				int nextpitch = static_cast<int>(scoreEvent[location + z][g_Pitches][j]);
@@ -354,6 +371,12 @@ vector<Correctness> EvaluateSfResult::EvaluateCorrectnessModify()
 				while (nextpitch >= 12) nextpitch -= 12;
 				nextOctavesInScore.push_back(nextpitch);
 			}
+		}
+		for (vector<int>::size_type j = 1; i + 1<sfResult[0].size() && j< sfResult[0][i + 1].size(); j += 2){
+			int nextpitch = static_cast<int>(sfResult[0][i + 1][j]);
+			nextPitchesInScore.push_back(nextpitch);
+			while (nextpitch >= 12) nextpitch -= 12;
+			nextOctavesInScore.push_back(nextpitch);
 		}
 		for (set<int>::iterator it = pitchesInScore.begin(); it != pitchesInScore.end(); it++){
 			int nowpitch = *it;
