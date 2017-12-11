@@ -715,7 +715,7 @@ vector<BeatRhythm> EvaluateSfResult::EvaluateBeatRhythm()
     }
 	//当有音符多弹或者回弹的情况，不考虑多弹回弹的小节和下一个小节的节奏评价
 	vector<int> WrongBeat;  //记录多弹或者回弹的小节
-	for (vector<int>::size_type i = 0; i < correctness.size(); ++i) {
+	for (int i = 0; i < correctness.size(); ++i) {
 		if (correctness[i].jumpback == 1) { // 回弹了
 			int beatnum = 0;
 			while (beatnum< barFirst.size() && i<sfResultLocate.size() && !(sfResultLocate[i] >= barFirst[beatnum] && sfResultLocate[i] <= barEnd[beatnum])){
@@ -735,13 +735,13 @@ vector<BeatRhythm> EvaluateSfResult::EvaluateBeatRhythm()
 	for (int i = 0; i < sfResult[0].size(); i++){
 		AllLocationMap.insert(pair<int, bool>(sfResultLocate[i], true));
 	}
-	for (vector<int>::size_type i = 0; i <sfResultLocate.size(); i++){
+	for (int i = 0; i <sfResultLocate.size(); i++){
 		int repeatLoc = count(sfResultLocate.begin(), sfResultLocate.end(), sfResultLocate[i]);
 		if (repeatLoc >= 2 && i<sfResult[0].size() && sfResult[0][i].size()==2){
 			for (map<int,bool>::iterator it = AllLocationMap.begin(); it!=AllLocationMap.end(); it++){
 				if (it->first == sfResultLocate[i] && it->second){
 					vector<int> lastOctive;
-					for (vector<int>::size_type j = i - 2; j <= i - 1; j++){
+					for (int j = i - 2; j <= i - 1; j++){
 						if (j >= 0){
 							for (vector<int>::size_type k = 1; k < sfResult[0][j].size(); k += 2){
 								lastOctive.push_back(static_cast<int>(sfResult[0][j][k]) % 12);
