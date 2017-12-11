@@ -177,6 +177,8 @@ public:
 	vector<vector<vector<double>>> GettimePitchesPair();
 
 	vector<double> GetRhyTime();                // 获取小节节拍时长
+
+
 private:
     /**
      * 下面是一些类的成员变量，在乐谱跟踪算法中使用

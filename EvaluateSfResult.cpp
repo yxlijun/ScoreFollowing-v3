@@ -718,14 +718,14 @@ vector<BeatRhythm> EvaluateSfResult::EvaluateBeatRhythm()
 	for (vector<int>::size_type i = 0; i < correctness.size(); ++i) {
 		if (correctness[i].jumpback == 1) { // 回弹了
 			int beatnum = 0;
-			while (beatnum< barFirst.size() && !(sfResultLocate[i] >= barFirst[beatnum] && sfResultLocate[i] <= barEnd[beatnum])){
+			while (beatnum< barFirst.size() && i<sfResultLocate.size() && !(sfResultLocate[i] >= barFirst[beatnum] && sfResultLocate[i] <= barEnd[beatnum])){
 				++beatnum;
 			}
 			WrongBeat.push_back(beatnum);
 		}
 		else if (!correctness[i].excess.empty()) { // 多弹了音符或者没有弹
 			int beatnum = 0;
-			while (beatnum< barFirst.size() && !(sfResultLocate[i] >= barFirst[beatnum] && sfResultLocate[i] <= barEnd[beatnum])){
+			while (beatnum< barFirst.size() && i<sfResultLocate.size() && !(sfResultLocate[i] >= barFirst[beatnum] && sfResultLocate[i] <= barEnd[beatnum])){
 				++beatnum;
 			}
 			WrongBeat.push_back(beatnum);
@@ -737,13 +737,15 @@ vector<BeatRhythm> EvaluateSfResult::EvaluateBeatRhythm()
 	}
 	for (vector<int>::size_type i = 0; i <sfResultLocate.size(); i++){
 		int repeatLoc = count(sfResultLocate.begin(), sfResultLocate.end(), sfResultLocate[i]);
-		if (repeatLoc >= 2 && sfResult[0][i].size()==2){
+		if (repeatLoc >= 2 && i<sfResult[0].size() && sfResult[0][i].size()==2){
 			for (map<int,bool>::iterator it = AllLocationMap.begin(); it!=AllLocationMap.end(); it++){
 				if (it->first == sfResultLocate[i] && it->second){
 					vector<int> lastOctive;
-					for (vector<int>::size_type j = i - 2; j >= 0 && j <= i - 1; j++){
-						for (vector<int>::size_type k = 1; k < sfResult[0][j].size(); k += 2){
-							lastOctive.push_back(static_cast<int>(sfResult[0][j][k]) % 12);
+					for (vector<int>::size_type j = i - 2; j <= i - 1; j++){
+						if (j >= 0){
+							for (vector<int>::size_type k = 1; k < sfResult[0][j].size(); k += 2){
+								lastOctive.push_back(static_cast<int>(sfResult[0][j][k]) % 12);
+							}
 						}
 					}
 					int octive = static_cast<int>(sfResult[0][i][1]) % 12;
